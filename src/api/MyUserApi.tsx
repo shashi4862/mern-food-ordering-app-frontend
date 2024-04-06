@@ -1,4 +1,5 @@
-import { User, useAuth0 } from "@auth0/auth0-react";
+import { User } from "@/types";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 
@@ -28,11 +29,11 @@ export const useGetMyUser = () => {
     const {
         data: currentUser,
         isLoading,
-        error
+        error,
     } = useQuery("fetchCurrentUser", getMyUserRequest);
 
     if (error) {
-        toast.error(error.toString())
+        toast.error(error.toString());
     }
 
     return { currentUser, isLoading };
@@ -66,8 +67,8 @@ export const useCreateMyUser = () => {
         mutateAsync: createUser,
         isLoading,
         isError,
-        isSuccess
-    } = useMutation(createMyUserRequest)
+        isSuccess,
+    } = useMutation(createMyUserRequest);
 
     return {
         createUser,
@@ -87,7 +88,7 @@ type UpdateMyUserRequest = {
 export const useUpdateMyUser = () => {
     const { getAccessTokenSilently } = useAuth0();
 
-    const updateMyUserRequest = async (FormData: UpdateMyUserRequest) => {
+    const updateMyUserRequest = async (formData: UpdateMyUserRequest) => {
         const accessToken = await getAccessTokenSilently();
 
         const response = await fetch(`${API_BASE_URL}/api/my/user`, {
@@ -96,7 +97,7 @@ export const useUpdateMyUser = () => {
                 Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(FormData),
+            body: JSON.stringify(formData),
         });
 
         if (!response.ok) {
@@ -115,7 +116,7 @@ export const useUpdateMyUser = () => {
     } = useMutation(updateMyUserRequest);
 
     if (isSuccess) {
-        toast.success("User Profile updated!");
+        toast.success("User profile updated!");
     }
 
     if (error) {
