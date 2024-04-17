@@ -19,6 +19,7 @@ const MainNav = () => {
                 </Button>
             )}
         </span>
-    );
-};
+
+    )
+}
 export default MainNav;
